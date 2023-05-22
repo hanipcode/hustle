@@ -1,0 +1,25 @@
+# C++ build output
+build/
+bin/
+lib/
+
+# CMake build output
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+Makefile
+cmake_install.cmake
+
+# Compiler generated files
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+
+# C++ IDE files
+
+
+# Other
+.DS_Store
