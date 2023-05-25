@@ -79,7 +79,8 @@
 		"sstream": "cpp",
 		"stop_token": "cpp",
 		"thread": "cpp",
-		"valarray": "cpp"
+		"valarray": "cpp",
+		"*.m": "cpp"
 	},
 	"cmake.configureArgs": [
 		"-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"

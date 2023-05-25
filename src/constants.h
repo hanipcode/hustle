@@ -1,8 +1,8 @@
 #ifndef GAME_CONSTANTS
 #define GAME_CONSTANTS
 
-#include "raylib.h";
-#include "raymath.h";
+#include "raylib.h"
+#include "raymath.h"
 
 namespace GameConstants {
 const int SCREEN_WIDTH = 320;

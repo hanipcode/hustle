@@ -2,7 +2,7 @@
 #include "raylib.h"
 #include "tileson.h"
 
-void TileMap::init(std::string mapPath) {
+void TileMap::init(const std::string &mapPath) {
   tson::Tileson t;
   map = t.parse(fs::path(mapPath));
   for (const auto &tileset : map->getTilesets()) {
@@ -13,7 +13,8 @@ void TileMap::init(std::string mapPath) {
   }
 };
 
-void TileMap::traverseTile(tson::LayerType layerType, TileCallback callback) {
+void TileMap::traverseTile(const tson::LayerType &layerType,
+                           const TileCallback &callback) {
   for (const tson::Layer &layer : map->getLayers()) {
     if (layer.getType() == layerType) {
       for (const auto &[pos, tile] : layer.getTileData()) {
@@ -32,24 +33,27 @@ void TileMap::draw() {
       // Determine the tileset index based on the tile ID
       int tilesetIndex = -1;
       for (int i = 0; i < map->getTilesets().size(); ++i) {
-        if (tileId >= map->getTilesets()[i].getFirstgid()) {
+        tson::Tileset &tileset = map->getTilesets()[i];
+        if (tileId >= tileset.getFirstgid() &&
+            tileId < tileset.getFirstgid() + tileset.getTileCount()) {
           tilesetIndex = i;
           break;
         }
       }
 
       if (tilesetIndex != -1) {
+        tson::Tileset &tileset = map->getTilesets()[tilesetIndex];
         // Calculate the position of the tile
         int posX = std::get<0>(pos);
         int posY = std::get<1>(pos);
-        int tileSize = map->getTilesets()[tilesetIndex].getTileSize().x;
+        int tileSize = tileset.getTileSize().x;
 
         // Calculate the source rectangle within the tileset texture
-        int tilesetId = tileId - map->getTilesets()[tilesetIndex].getFirstgid();
-        int tilesetColumns = map->getTilesets()[tilesetIndex].getColumns();
-        Rectangle sourceRect = {(tilesetId % tilesetColumns) * tileSize,
-                                (tilesetId / tilesetColumns) * tileSize,
-                                tileSize, tileSize};
+        int tilesetId = tileId - tileset.getFirstgid();
+        int tilesetColumns = tileset.getColumns();
+        tson::Rect drawingRect = tile->getDrawingRect();
+        Rectangle sourceRect = {drawingRect.x, drawingRect.y, drawingRect.width,
+                                drawingRect.height};
         Vector2 destPos = {posX * tileSize, posY * tileSize};
         DrawTextureRec(tilesetTextures[tilesetIndex], sourceRect, destPos,
                        WHITE);

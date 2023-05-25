@@ -11,13 +11,13 @@ class Level {
   b2World world;
   std::string mapPath;
   void initializeMap(std::string mapPath);
+  Player *player = nullptr;
+  std::unique_ptr<TileMap> tileMap;
 
 public:
   Level(std::string mapPath);
-  Level(std::string mapPath, Vector2 playerPosition);
-  Level(std::string mapPath, std::unique_ptr<Player> &player);
-  std::unique_ptr<Player> player;
-  std::unique_ptr<TileMap> tileMap;
+  Level(std::string mapPath, Player *player);
+  Level(std::string mapPath, Player *player, Vector2 initialPosition);
   virtual void update();
   virtual void draw();
 };

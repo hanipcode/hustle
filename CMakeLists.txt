@@ -61,12 +61,15 @@ endif()
 
 # Our Project
 set(SOURCE_FILES
-	main.cpp
-  player.cpp
-  draw_physics.cpp
-  constants.cpp
-  tilemap.cpp
-  level.cpp)
+	src/main.cpp
+  src/player.cpp
+  src/draw_physics.cpp
+  src/constants.cpp
+  src/tilemap.cpp
+  src/level.cpp
+  src/resource.cpp
+  src/sprite.cpp
+  )
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 #set(raylib_VERBOSE 1)

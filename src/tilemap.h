@@ -6,7 +6,6 @@
 #include "string"
 #include "tileson.h"
 
-
 typedef std::function<void(const std::tuple<int, int> &pos,
                            const tson::Tile *tile)>
     TileCallback;
@@ -16,8 +15,9 @@ class TileMap {
   std::vector<Texture2D> tilesetTextures;
 
 public:
-  void init(std::string mapPath);
-  void traverseTile(tson::LayerType layerType, TileCallback callback);
+  void init(const std::string &mapPath);
+  void traverseTile(const tson::LayerType &layerType,
+                    const TileCallback &callback);
   void initCollision();
   void draw();
 };

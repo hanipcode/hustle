@@ -5,7 +5,7 @@
 #include "tilemap.h"
 
 void Level::initializeMap(std::string mapPath) {
-  tileMap = std::unique_ptr<TileMap>();
+  tileMap = std::make_unique<TileMap>();
   tileMap->init(mapPath);
 }
 
@@ -13,13 +13,12 @@ Level::Level(std::string mapPath) : mapPath(mapPath), world(b2Vec2(0.0, 0.0)) {
   initializeMap(mapPath);
 }
 
-Level::Level(std::string mapPath, Vector2 playerPos)
-    : mapPath(mapPath), world(b2Vec2(0.0, 0.0)) {
+Level::Level(std::string mapPath, Player *player)
+    : mapPath(mapPath), world(b2Vec2(0.0, 0.0)), player(player) {
   initializeMap(mapPath);
-  player = std::make_unique<Player>(playerPos, &world);
 }
 
-Level::Level(std::string mapPath, std::unique_ptr<Player> &player)
+Level::Level(std::string mapPath, Player *player, Vector2 initialPosition)
     : mapPath(mapPath), world(b2Vec2(0.0, 0.0)), player(player) {
   initializeMap(mapPath);
 }

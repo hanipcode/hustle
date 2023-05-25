@@ -20,15 +20,15 @@ using namespace std;
 #include <emscripten/emscripten.h>
 #endif
 
-static void UpdateDrawFrame(RenderTexture2D *target,
-                            TileMap &tileMap); // Update and draw one frame
+static void UpdateDrawFrame(RenderTexture2D *target, TileMap &tileMap,
+                            Player &player,
+                            b2World &world); // Update and draw one frame
 //--------------------------------------------------------------------------------------
 const int screenWidth = 1280;
 const int screenHeight = 720;
 const int gameScreenWidth = 320;
 const int gameScreenHeight = 180;
 
-Player player;
 b2World world = b2World(b2Vec2(0.0f, 0.0f));
 const float meterGameScreenWidth = pixelsToMeters(gameScreenWidth);
 const float meterGameScreenHeight = pixelsToMeters(gameScreenHeight);
@@ -38,6 +38,10 @@ int main() {
   SetConfigFlags(FLAG_VSYNC_HINT);
   SetWindowMinSize(gameScreenWidth, gameScreenHeight);
   RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
+  Player player;
+  DebugDraw debugDraw;
+  debugDraw.SetFlags(debugDraw.e_shapeBit);
+  world.SetDebugDraw(&debugDraw);
   player.initBody(&world);
   //--------------------------------------------------------------------------------------
 
@@ -55,7 +59,7 @@ int main() {
   while (!WindowShouldClose()) // Detect window close button or ESC key
   {
     world.Step(1.0f / 60.0f, 8, 3);
-    UpdateDrawFrame(&target, tileMap);
+    UpdateDrawFrame(&target, tileMap, player, world);
   }
 #endif
 
@@ -69,7 +73,8 @@ int main() {
 }
 
 // Update and draw game frame
-static void UpdateDrawFrame(RenderTexture2D *target, TileMap &tileMap) {
+static void UpdateDrawFrame(RenderTexture2D *target, TileMap &tileMap,
+                            Player &player, b2World &world) {
   // // Input
 
   player.update();
@@ -80,6 +85,7 @@ static void UpdateDrawFrame(RenderTexture2D *target, TileMap &tileMap) {
   ClearBackground(RAYWHITE);
   tileMap.draw();
   player.draw();
+  world.DebugDraw();
 
   EndTextureMode();
 
